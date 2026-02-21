@@ -4,14 +4,14 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#3B82F6',
-      light: '#60A5FA',
-      dark: '#2563EB',
+      main: '#D4AF37', // Bright gold
+      light: '#F4D03F',
+      dark: '#B8860B',
     },
     secondary: {
-      main: '#8B5CF6',
-      light: '#A78BFA',
-      dark: '#7C3AED',
+      main: '#8B4513', // Saddle brown
+      light: '#A0522D',
+      dark: '#654321',
     },
     background: {
       default: '#0B0F14',
@@ -19,7 +19,7 @@ export const theme = createTheme({
     },
     text: {
       primary: '#F9FAFB',
-      secondary: '#D1D5DB',
+      secondary: '#949ba5',
     },
     success: {
       main: '#10B981',
@@ -31,7 +31,7 @@ export const theme = createTheme({
       main: '#EF4444',
     },
     info: {
-      main: '#3B82F6',
+      main: '#7ade1c',
     },
   },
   typography: {

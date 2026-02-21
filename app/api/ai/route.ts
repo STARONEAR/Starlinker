@@ -5,8 +5,16 @@ export async function POST(req: NextRequest) {
   try {
     const { message } = await req.json();
 
-    // Simple rule-based AI assistant (can be replaced with actual AI API)
-    const response = generateResponse(message.toLowerCase());
+    let response: string;
+
+    // Try Groq AI first (free tier)
+    try {
+      response = await getGroqResponse(message);
+    } catch (groqError) {
+      console.log('Groq failed, using fallback:', groqError);
+      // Fallback to rule-based responses
+      response = generateResponse(message.toLowerCase());
+    }
 
     // Save conversation to database
     const supabase = await createClient();
@@ -24,6 +32,48 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return NextResponse.json({ error: 'Failed to process request' }, { status: 500 });
   }
+}
+
+async function getGroqResponse(message: string): Promise<string> {
+  const apiKey = process.env.GROQ_API_KEY;
+  
+  if (!apiKey || apiKey === 'your-groq-api-key') {
+    throw new Error('Groq API key not configured');
+  }
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      messages: [
+        {
+          role: 'system',
+          content: `You are a helpful AI assistant for Starlinker, a service marketplace platform. 
+Help users with:
+- Booking services (Internet installation, CCTV installation, TV mounting)
+- Finding products in the marketplace
+- Tracking orders and deliveries
+- Answering questions about pricing and features
+
+Keep responses concise and helpful. Use bullet points when listing options.`
+        },
+        { role: 'user', content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 300,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Groq API error: ${res.status}`);
+  }
+
+  const data = await res.json();
+  return data.choices[0]?.message?.content || generateResponse(message.toLowerCase());
 }
 
 function generateResponse(message: string): string {
