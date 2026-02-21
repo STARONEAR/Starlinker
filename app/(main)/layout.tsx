@@ -1,6 +1,6 @@
 import { BottomNav } from '@/components/layout/BottomNav'
 import { TopBar } from '@/components/layout/TopBar'
-import { FloatingAI } from '@/components/layout/FloatingAI'
+import AIChat from '@/components/ai/AIChat'
 
 export default function MainLayout({
   children,
@@ -14,7 +14,7 @@ export default function MainLayout({
         {children}
       </main>
       <BottomNav />
-      <FloatingAI />
+      <AIChat />
     </div>
   )
 }

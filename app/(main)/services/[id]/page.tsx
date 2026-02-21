@@ -4,15 +4,20 @@ import { Clock, MapPin } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils/format'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
+import { Database } from '@/types/database'
+
+type Service = Database['public']['Tables']['services']['Row']
 
 export default async function ServiceDetailPage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
   
-  const { data: service, error } = await supabase
+  const { data, error } = await supabase
     .from('services')
     .select('*')
     .eq('id', params.id)
     .single()
+
+  const service = data as Service | null
 
   if (error || !service) {
     notFound()

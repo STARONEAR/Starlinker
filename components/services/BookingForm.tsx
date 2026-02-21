@@ -53,7 +53,8 @@ export function BookingForm({ serviceId, serviceName, basePrice }: BookingFormPr
         is_express: isExpress,
         notes: formData.notes,
         status: 'pending',
-      })
+        payment_status: 'pending',
+      } as any)
 
       if (error) throw error
 

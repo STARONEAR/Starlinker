@@ -80,19 +80,102 @@ export type Database = {
       orders: {
         Row: {
           id: string
-          buyer_id: string
+          user_id: string
           status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
-          subtotal: number
-          delivery_fee: number
-          total: number
-          payment_status: 'pending' | 'paid' | 'failed' | 'refunded'
-          notes: string | null
+          total_amount: number
+          delivery_address: string
+          delivery_city: string
+          delivery_state: string
+          delivery_zip: string
+          delivery_phone: string
           created_at: string
           updated_at: string
         }
         Insert: Omit<Database['public']['Tables']['orders']['Row'], 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['orders']['Insert']>
       }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_id: string
+          quantity: number
+          price_at_time: number
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['order_items']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['order_items']['Insert']>
+      }
+      deliveries: {
+        Row: {
+          id: string
+          order_id: string
+          status: 'pending' | 'picked_up' | 'in_transit' | 'out_for_delivery' | 'delivered' | 'cancelled' | 'failed'
+          current_location: string | null
+          estimated_delivery: string | null
+          delivered_at: string | null
+          proof_of_delivery_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['deliveries']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['deliveries']['Insert']>
+      }
+      reviews: {
+        Row: {
+          id: string
+          product_id: string
+          order_id: string
+          reviewer_id: string
+          rating: number
+          comment: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['reviews']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['reviews']['Insert']>
+      }
+      ai_conversations: {
+        Row: {
+          id: string
+          user_id: string
+          message: string
+          response: string
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['ai_conversations']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['ai_conversations']['Insert']>
+      }
+      chats: {
+        Row: {
+          id: string
+          buyer_id: string
+          seller_id: string
+          product_id: string | null
+          last_message: string | null
+          last_message_at: string | null
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['chats']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['chats']['Insert']>
+      }
+      messages: {
+        Row: {
+          id: string
+          chat_id: string
+          sender_id: string
+          content: string
+          attachment_url: string | null
+          is_read: boolean
+          read_at: string | null
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['messages']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['messages']['Insert']>
+      }
+    }
+    Enums: {
+      delivery_status: 'pending' | 'picked_up' | 'in_transit' | 'out_for_delivery' | 'delivered' | 'cancelled' | 'failed'
     }
   }
 }

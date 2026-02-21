@@ -3,15 +3,20 @@ import { notFound } from 'next/navigation'
 import { BookingForm } from '@/components/services/BookingForm'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { Database } from '@/types/database'
+
+type Service = Database['public']['Tables']['services']['Row']
 
 export default async function BookServicePage({ params }: { params: { id: string } }) {
   const supabase = await createClient()
   
-  const { data: service, error } = await supabase
+  const { data, error } = await supabase
     .from('services')
     .select('*')
     .eq('id', params.id)
     .single()
+
+  const service = data as Service | null
 
   if (error || !service) {
     notFound()
