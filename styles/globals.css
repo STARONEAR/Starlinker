@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-jakarta: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+
+  body {
+    @apply bg-background-primary text-gray-100 antialiased;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-surface-glass backdrop-blur-xl border border-surface-glass-border rounded-2xl;
+  }
+
+  .glass-hover {
+    @apply glass hover:bg-surface-glass-hover hover:border-opacity-20 transition-all duration-200;
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  .neon-glow-secondary {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+}
